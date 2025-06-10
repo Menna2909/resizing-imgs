@@ -24,11 +24,9 @@ describe('POST /uploads', () => {
     expect(response.status).toBe(200);
     expect(response.headers.get('content-type')).toMatch(/^image\/jpg/);
 
-    // Use modern alternative
     const arrayBuffer = await response.arrayBuffer();
     expect(arrayBuffer).toBeInstanceOf(ArrayBuffer);
 
-    // If you specifically need a Buffer:
     const buffer = Buffer.from(arrayBuffer);
     expect(buffer).toBeInstanceOf(Buffer);
 })});

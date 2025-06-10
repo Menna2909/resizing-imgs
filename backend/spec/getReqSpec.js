@@ -1,6 +1,5 @@
 describe("GET /", () => {
   it("should return a welcome message that redirects the user into the right path", () => {
-    // let finalValue;
     fetch("http://localhost:3000/")
       .then((res) => {
         return res.text();

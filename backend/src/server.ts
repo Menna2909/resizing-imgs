@@ -16,7 +16,6 @@ app.post(
   "/uploads",
   upload.single("imgInput"),
   async (req: Request, res: Response) => {
-    //// add image type check
 
     const newHeight = parseInt(req.body.height);
     const newWidth = parseInt(req.body.width);
