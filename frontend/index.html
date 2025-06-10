@@ -13,47 +13,64 @@
             <p class="tagline">Resize your images with perfect precision</p>
         </header>
 
+        <!-- Section 1: Upload and Add to Gallery -->
         <div class="upload-card">
-            <form id="uploadForm">
-                <div class="form-grid">
-                    <div class="form-group" id="file-selection">
-                        <label for="imgInput">Select Image (JPG)</label>
-                        <input type="file" id="imgInput" accept="image/jpeg" required>
-                        <p class="file-info">Max size: 5MB</p>
-                    </div>
-                    <div class="form-group" id="width">
-                        <label for="newW">Width (px)</label>
-                        <input type="number" id="newW" min="100" max="5000" required>
-                    </div>
-                    <div class="form-group" id="height">
-                        <label for="newH">Height (px)</label>
-                        <input type="number" id="newH" min="100" max="5000" required>
-                    </div>
+            <div class="upload-section">
+                <div class="form-group" id="file-selection">
+                    <label for="imgInput">Select Image (JPG)</label>
+                    <input type="file" id="imgInput" accept="image/jpeg" required>
+                    <p class="file-info">Max size: 5MB</p>
                 </div>
-                <div class="btns-container">
-                    <button type="submit" class="action-button">
-                        <i class="fas fa-magic"></i> Resize Image
-                    </button>
-                    <button type="reset" class="clear">
-                        Clear Selection
-                    </button>
-                </div>
-                <div id="errorMessage" class="error-message"></div>
-            </form>
+                <button id="addToGallery" class="action-button">
+                    <i class="fas fa-plus"></i> Add to Gallery
+                </button>
+            </div>
         </div>
 
+        <!-- Section 2: Gallery -->
+        <div class="gallery-container">
+            <h2><i class="fas fa-images"></i> Image Gallery</h2>
+            <div id="imageGallery" class="image-gallery">
+                <!-- Gallery items will be added here -->
+            </div>
+        </div>
+
+        <!-- Section 3: Resize Controls -->
+        <div class="resize-controls">
+            <h2><i class="fas fa-expand"></i> Resize Image</h2>
+            <div class="resize-grid">
+                <div class="form-group">
+                    <label for="newW">Width (px)</label>
+                    <input type="number" id="newW" min="100" max="5000" required>
+                </div>
+                <div class="form-group">
+                    <label for="newH">Height (px)</label>
+                    <input type="number" id="newH" min="100" max="5000" required>
+                </div>
+            </div>
+            <div class="resize-actions">
+                <select id="gallerySelect" class="gallery-select">
+                    <option value="">Select from gallery</option>
+                </select>
+                <button id="resizeFromGallery" class="action-button">
+                    <i class="fas fa-magic"></i> Resize Image
+                </button>
+            </div>
+        </div>
+
+        <!-- Result Container -->
         <div class="result-container" id="resizedImg">
             <div class="result-placeholder">
                 <i class="fas fa-image" style="font-size: 3rem; color: #d1d5db; margin-bottom: 1rem;"></i>
                 <p>Your resized image will appear here</p>
             </div>
         </div>
-    </div>
 
-    <footer>
-        <hr>
-        <p>Resizing tool - Made by Menna Mohamed</p>
-    </footer>
+        <footer>
+            <hr>
+            <p>Resizing tool - Made by Menna Mohamed</p>
+        </footer>
+    </div>
 
     <script src="./js/script.js"></script>
 </body>

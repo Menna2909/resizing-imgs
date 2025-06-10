@@ -200,3 +200,151 @@ footer {
 footer p {
     margin-top: 0.5em;
 }
+
+/* Add these styles */
+.gallery-container {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.gallery-container h2 {
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.gallery-actions {
+    margin-bottom: 1rem;
+}
+
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    transition: transform 0.3s;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    display: block;
+}
+
+.gallery-item .delete-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.gallery-item:hover .delete-btn {
+    opacity: 1;
+}
+
+.selection-area {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.gallery-select {
+    flex-grow: 1;
+    padding: 0.75rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 1rem;
+}
+
+.download-btn {
+    background: var(--secondary);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    margin-top: 1rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Add these new styles */
+.upload-section {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-end;
+}
+
+.upload-section .form-group {
+    flex-grow: 1;
+    margin-bottom: 0;
+}
+
+.resize-controls {
+    background: var(--card-bg);
+    border-radius: var(--border-radius);
+    box-shadow: var(--box-shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.resize-controls h2 {
+    color: var(--primary);
+    margin-bottom: 1.5rem;
+}
+
+.resize-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.resize-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.resize-actions .gallery-select {
+    flex-grow: 1;
+}
+
+.resize-actions .action-button {
+    width: auto;
+    min-width: 180px;
+}
+
+.upload-card {
+    margin-bottom: 2rem;
+}
+
+.gallery-container {
+    margin-bottom: 2rem;
+}
