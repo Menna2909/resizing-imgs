@@ -9,6 +9,6 @@
     "skipLibCheck": true,
     "moduleResolution": "node"
   },
-  "include": ["src/**/*", "src/tests"],
+  "include": ["src/**/*", "src/tests", "dist/tests/postReqSpec.js", "dist/tests/getReqSpec.js"],
   "exclude": ["node_modules", "./dist", "spec"]
 }
