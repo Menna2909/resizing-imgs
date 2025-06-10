@@ -15,6 +15,10 @@ app.use(express_1.default.urlencoded({ extended: true }));
 app.use(express_1.default.json());
 app.use((0, cors_1.default)());
 app.post("/uploads", upload.single("imgInput"), async (req, res) => {
+    if (!req.file) {
+        res.status(400).send("No data are sent to the server");
+        return;
+    }
     const newHeight = parseInt(req.body.height);
     const newWidth = parseInt(req.body.width);
     const newImg = await (0, sharp_1.default)(req.file?.buffer)

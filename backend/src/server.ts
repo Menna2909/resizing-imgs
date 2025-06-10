@@ -15,7 +15,11 @@ app.use(cors());
 app.post(
   "/uploads",
   upload.single("imgInput"),
-  async (req: Request, res: Response) => {
+  async (req: Request, res: Response): Promise<void> => {
+    if (!req.file) {
+      res.status(400).send("No data are sent to the server");
+      return;
+    }
 
     const newHeight = parseInt(req.body.height);
     const newWidth = parseInt(req.body.width);
@@ -29,7 +33,7 @@ app.post(
     res.send(newImg);
     // res.sendStatus(200);
     console.log("response is sent back!");
-  }
+  },
 );
 
 app.get("/", async (req: Request, res: Response) => {
