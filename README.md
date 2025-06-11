@@ -64,7 +64,7 @@ Start the server
 ## Running Tests
 
 To run tests, run the following command
-- The server should be running to test
+- The server should be running to run the test !
 In a seperate terminal rather than the one for the server, run :
 
 ```bash

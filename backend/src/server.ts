@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import multer from "multer";
-import sharp from "sharp";
 import cors from "cors";
+import { process } from "./routes/imgProcc";
 
 const app = express();
 const port = 3000;
@@ -23,11 +23,9 @@ app.post(
 
     const newHeight = parseInt(req.body.height);
     const newWidth = parseInt(req.body.width);
+    const bufferImg = req.file.buffer;
 
-    const newImg = await sharp(req.file?.buffer)
-      .resize(newWidth, newHeight)
-      .toFormat("jpg")
-      .toBuffer();
+    const newImg = await process(bufferImg, newWidth, newHeight);
 
     res.set("Content-Type", "image/jpg");
     res.send(newImg);

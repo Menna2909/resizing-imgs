@@ -4,7 +4,7 @@
   "description": "DECI level 4 final project ",
   "main": "index.js",
   "scripts": {
-    "test": "jasmine",
+    "test": "jasmine --config=src/test/support/jasmine.mjs",
     "build": "tsc",
     "start": "node dist/server.js",
     "lint": "eslint . --ext .ts",

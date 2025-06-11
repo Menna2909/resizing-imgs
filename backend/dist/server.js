@@ -5,8 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const multer_1 = __importDefault(require("multer"));
-const sharp_1 = __importDefault(require("sharp"));
 const cors_1 = __importDefault(require("cors"));
+const imgProcc_1 = require("./routes/imgProcc");
 const app = (0, express_1.default)();
 const port = 3000;
 const storage = multer_1.default.memoryStorage();
@@ -21,10 +21,8 @@ app.post("/uploads", upload.single("imgInput"), async (req, res) => {
     }
     const newHeight = parseInt(req.body.height);
     const newWidth = parseInt(req.body.width);
-    const newImg = await (0, sharp_1.default)(req.file?.buffer)
-        .resize(newWidth, newHeight)
-        .toFormat("jpg")
-        .toBuffer();
+    const bufferImg = req.file.buffer;
+    const newImg = await (0, imgProcc_1.process)(bufferImg, newWidth, newHeight);
     res.set("Content-Type", "image/jpg");
     res.send(newImg);
     // res.sendStatus(200);
