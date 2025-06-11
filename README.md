@@ -68,6 +68,6 @@ To run tests, run the following command
 In a seperate terminal rather than the one for the server, run :
 
 ```bash
-  npm run test
+  npm test
 ```
 
