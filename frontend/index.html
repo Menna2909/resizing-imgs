@@ -17,8 +17,8 @@
         <div class="upload-card">
             <div class="upload-section">
                 <div class="form-group" id="file-selection">
-                    <label for="imgInput">Select Image (JPG)</label>
-                    <input type="file" id="imgInput" accept="image/jpeg" required>
+                    <label for="imgInput">Select Image (JPG, JPEG, or PNG)</label>
+                    <input type="file" id="imgInput" accept=".jpeg, .png, .jpg" required>
                     <p class="file-info">Max size: 5MB</p>
                 </div>
                 <button id="addToGallery" class="action-button">
@@ -31,6 +31,12 @@
         <div class="gallery-container">
             <h2><i class="fas fa-images"></i> Image Gallery</h2>
             <div id="imageGallery" class="image-gallery">
+                <div class="gallery-item">
+                    <img src="../backend/images/icelandwaterfall.jpg" alt="icelandwaterfall" class="starter">
+                    <button class="delete-btn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
                 <!-- Gallery items will be added here -->
             </div>
         </div>
@@ -49,9 +55,6 @@
                 </div>
             </div>
             <div class="resize-actions">
-                <select id="gallerySelect" class="gallery-select">
-                    <option value="">Select from gallery</option>
-                </select>
                 <button id="resizeFromGallery" class="action-button">
                     <i class="fas fa-magic"></i> Resize Image
                 </button>

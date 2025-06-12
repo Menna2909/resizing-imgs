@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import multer from "multer";
 import cors from "cors";
 import { process } from "./routes/imgProcc";
+import { pathResizer } from "./routes/prccPath";
 
 const app = express();
 const port = 3000;
@@ -33,6 +34,14 @@ app.post(
     console.log("response is sent back!");
   },
 );
+
+app.post("/resize", async (req: Request, res: Response): Promise<void> => {
+  const { imgInput, width, height } = req.body;
+
+  const response = await pathResizer(imgInput, width, height);
+  res.set("Content-Type", "image/jpg");
+  res.send(response);
+});
 
 app.get("/", async (req: Request, res: Response) => {
   res.send(

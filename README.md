@@ -16,6 +16,7 @@ $ npm -v
 - Totally Free
 - Offers wide range of sized for resizing 
 - FAst, easy, compatable
+- Accpet jpg, jpeg, png files and conert them into jpg
 
 
 ## Usage/Examples

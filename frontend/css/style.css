@@ -348,3 +348,7 @@ footer p {
 .gallery-container {
     margin-bottom: 2rem;
 }
+
+.selectedImg {
+    border: 5px solid #3f37c9;
+}

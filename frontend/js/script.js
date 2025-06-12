@@ -2,8 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // DOM Elements
     const imgInput = document.getElementById('imgInput');
     const addToGalleryBtn = document.getElementById('addToGallery');
-    const imageGallery = document.getElementById('imageGallery');
-    const gallerySelect = document.getElementById('gallerySelect');
+    const imageGallery = document.getElementById('imageGallery'); // images in the gallery container
     const resizeFromGalleryBtn = document.getElementById('resizeFromGallery');
     const newHeight = document.getElementById('newH');
     const newWidth = document.getElementById('newW');
@@ -12,13 +11,31 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Store gallery images
     const galleryImages = [];
+    let selected_img_path;
+    let selectedId;
+
+    function validateFile(file) {
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+        const maxSizeMB = 5;
+        
+        if (!allowedTypes.includes(file.type)) {
+            throw new Error('Only JPG, JPEG, and PNG images are supported');
+        }
+        
+        if (file.size > maxSizeMB * 1024 * 1024) {
+            throw new Error(`File too large (max ${maxSizeMB}MB)`);
+        }
+        
+        return true;
+    }
     
     // Initialize file input display
     imgInput.addEventListener('change', () => {
         const fileInfo = imgInput.nextElementSibling;
         if (imgInput.files.length > 0) {
+            validateFile(imgInput.files[0]);
             fileInfo.textContent = `Selected: ${imgInput.files[0].name}`;
-            errorMessage.textContent = '';
+            // errorMessage.textContent = '';
         } else {
             fileInfo.textContent = 'Max size: 5MB';
         }
@@ -27,16 +44,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add to gallery functionality
     addToGalleryBtn.addEventListener('click', () => {
         if (!imgInput.files || imgInput.files.length === 0) {
-            showError('Please select an image file');
+            alert('Please select an image file');
             return;
         }
         
         const file = imgInput.files[0];
         
-        if (file.type !== 'image/jpeg') {
-            showError('Only JPG images are supported');
-            return;
-        }
+        // if (file.type !== 'image/jpeg') {
+        //     alert('Only JPG images are supported');
+        //     return;
+        // }
+        validateFile(file);
 
         const reader = new FileReader();
         
@@ -64,6 +82,34 @@ document.addEventListener('DOMContentLoaded', () => {
         
         reader.readAsDataURL(file);
     });
+
+    function setSelectedImage(selectedImageElement) {
+        const allImages = imageGallery.querySelectorAll('img');
+
+        allImages.forEach(img => {
+            img.classList.remove('selectedImg');
+        });
+
+        if (selectedImageElement && selectedImageElement.tagName === 'IMG') {
+            selectedImageElement.classList.add('selectedImg');
+        }
+    }
+
+    imageGallery.addEventListener('click', (ev) => {
+
+        if(ev.target.classList.contains('starter')) {
+            const srcImgUrl = ev.target.src;
+            const relativePath = new URL(srcImgUrl).pathname; 
+            selected_img_path = relativePath.replace(/^\/?backend\//i, ''); 
+            setSelectedImage(ev.target);
+        } else if(ev.target.tagName === 'IMG'){
+            const galleryItem = ev.target.closest('.gallery-item');
+            if (galleryItem) {
+                selectedId = galleryItem.dataset.id; // Update selectedId to match galleryImages
+            }
+            setSelectedImage(ev.target);
+        }
+    })
     
     // Add image to gallery UI
     function addImageToGalleryUI(imgId, imgUrl) {
@@ -115,51 +161,64 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Resize from gallery functionality
     resizeFromGalleryBtn.addEventListener('click', async () => {
-        const selectedId = gallerySelect.value;
-        if (!selectedId) {
-            showError('Please select an image from the gallery');
-            return;
-        }
         
         if (!newWidth.value || !newHeight.value) {
-            showError('Please enter both width and height');
+            alert('Please enter both width and height');
             return;
         }
-        
-        const selectedImage = galleryImages.find(img => img.id === selectedId);
-        if (!selectedImage) return;
         
         // Show loading state
         setLoadingState(resizeFromGalleryBtn, true);
-        
+
         try {
-            const formData = new FormData();
-            formData.append('imgInput', selectedImage.file);
-            formData.append('height', newHeight.value);
-            formData.append('width', newWidth.value);
-            
-            const response = await fetch('http://localhost:3000/uploads', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (!response.ok) {
-                throw new Error(`Server responded with ${response.status}`);
+            if (selected_img_path) {
+                const res = await fetch("http://localhost:3000/resize", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                    imgInput: selected_img_path, 
+                    width: parseInt(newWidth.value),
+                    height: parseInt(newHeight.value),
+                    }),
+                });
+                const blob = await res.blob();
+                displayResizedImage(URL.createObjectURL(blob));
+            } else {
+                const selectedImage = galleryImages.find(img => img.id == selectedId);
+                if (!selectedImage) return;
+                
+                const formData = new FormData();
+                formData.append('imgInput', selectedImage.file);
+                formData.append('height', newHeight.value);
+                formData.append('width', newWidth.value);
+                
+                const response = await fetch('http://localhost:3000/uploads', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`Server responded with ${response.status}`);
+                }
+                
+                const blob = await response.blob();
+                const imgUrl = URL.createObjectURL(blob);
+                
+                displayResizedImage(imgUrl);
             }
-            
-            const blob = await response.blob();
-            const imgUrl = URL.createObjectURL(blob);
-            
-            displayResizedImage(imgUrl);
-            showSuccess('Image resized successfully!');
-            
-        } catch (err) {
-            console.error('Error:', err);
-            showError(`Error: ${err.message}`);
+        } catch (error) {
+            console.log(`An error occured while processign starter images : ${error}`)
         } finally {
             setLoadingState(resizeFromGalleryBtn, false);
-        }
-    });
+        }}
+
+        // const selectedId = gallerySelect.value;
+        // if (!selectedId) {
+        //     alert('Please select an image from the gallery');
+        //     return;
+        // }
+    
+    );
     
     // Function to display resized image
     function displayResizedImage(imgUrl) {
@@ -210,23 +269,5 @@ document.addEventListener('DOMContentLoaded', () => {
             button.innerHTML = '<i class="fas fa-magic"></i> Resize Image';
             button.disabled = false;
         }
-    }
-    
-    // Helper function for error messages
-    function showError(message) {
-        errorMessage.textContent = message;
-        errorMessage.className = 'error-message';
-    }
-    
-    // Helper function for success messages
-    function showSuccess(message) {
-        const successMsg = document.createElement('div');
-        successMsg.className = 'success-message';
-        successMsg.innerHTML = `<i class="fas fa-check-circle"></i> ${message}`;
-        errorMessage.appendChild(successMsg);
-        
-        setTimeout(() => {
-            successMsg.remove();
-        }, 3000);
     }
 });
